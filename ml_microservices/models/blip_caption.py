@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Load model once at startup
+# Load model once at startup 
 processor = None
 model = None
 
