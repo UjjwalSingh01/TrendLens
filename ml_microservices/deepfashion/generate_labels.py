@@ -1,22 +1,33 @@
 import os
-from deepfashion_utils import load_deepfashion_attributes  # Hypothetical helper
+from .process_deepfashion import parse_deepfashion_files
 
 def generate_labels():
-    """Generate clothing labels from DeepFashion dataset"""
-    # In a real implementation, you'd parse the dataset here
-    # This is a simplified version with common Indian wear
-    labels = [
-        "t-shirt", "shirt", "dress", "jeans", "trousers",
-        "blouse", "jacket", "coat", "sweater", "hoodie",
-        "saree", "kurta", "lehenga", "sherwani", "dhoti",
-        "jumpsuit", "skirt", "shorts", "swimsuit", "blazer"
-    ]
+    """Generate comprehensive clothing labels from DeepFashion"""
+    deepfashion_dir = os.path.dirname(os.path.abspath(__file__))
+    data = parse_deepfashion_files(deepfashion_dir)
+    
+    # Combine categories and attributes
+    all_labels = set()
+    
+    # Add all category names
+    all_labels.update(data["categories"].values())
+    
+    # Add all attribute names
+    all_labels.update(data["attributes"].values())
+    
+    # Add combined category-attribute pairs
+    for img, attrs in data["image_attributes"].items():
+        category = data["image_categories"].get(img, "")
+        for attr in attrs:
+            # Create combinations like "floral dress", "long-sleeve shirt"
+            all_labels.add(f"{attr} {category}")
     
     # Write to file
-    with open("../clip_labels.txt", "w") as f:
-        f.write("\n".join(labels))
+    output_path = os.path.join(os.path.dirname(deepfashion_dir), "clip_labels.txt")
+    with open(output_path, "w") as f:
+        f.write("\n".join(sorted(all_labels)))
     
-    print(f"Generated {len(labels)} clothing labels")
+    print(f"Generated {len(all_labels)} clothing labels")
 
 if __name__ == "__main__":
     generate_labels()
