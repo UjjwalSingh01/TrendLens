@@ -8,8 +8,12 @@ const router = express.Router();
 
 router.post("/products", async (req, res) => {
   try {
-    const { keywords } = req.body;
-    const urls = buildSearchUrls(keywords);
+    const { caption, keywords, clip_label } = req.body; // MODIFIED
+    
+    // Combine all metadata for better search results
+    const searchTerms = [clip_label, ...keywords, ...caption.split(" ")]; 
+    
+    const urls = buildSearchUrls(searchTerms); // MODIFIED
     
     const results = await Promise.allSettled([
       scrapeAmazon(urls.amazon),
