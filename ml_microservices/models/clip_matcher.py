@@ -1,7 +1,6 @@
 import os
 import logging
 import torch
-import io
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 from concurrent.futures import ThreadPoolExecutor
@@ -31,7 +30,7 @@ def load_models():
     
     if not LABELS:
         logger.info("Loading clothing labels...")
-        label_path = os.path.join(os.path.dirname(__file__), "..", "clip_labels.txt")
+        label_path = os.path.join(os.path.dirname(__file__), "clip_labels.txt")
         
         if not os.path.exists(label_path):
             logger.error(f"Label file not found: {label_path}")
@@ -57,13 +56,13 @@ def process_text_batch(text_batch):
         truncation=True
     ))
 
-def get_best_clip_label(image_bytes):
+# MODIFIED: Accept PIL Image instead of bytes
+def get_best_clip_label(image: Image.Image):
     """Classify clothing item using CLIP and DeepFashion labels"""
     try:
         load_models()
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         
-        # Process image
+        # Process image directly
         image_inputs = processor(images=image, return_tensors="pt")
         image_features = model.get_image_features(**image_inputs)
         image_features = image_features / image_features.norm(dim=-1, keepdim=True)

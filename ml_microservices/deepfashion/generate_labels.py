@@ -3,7 +3,12 @@ from .process_deepfashion import parse_deepfashion_files
 
 def generate_labels():
     """Generate comprehensive clothing labels from DeepFashion"""
-    deepfashion_dir = os.path.dirname(os.path.abspath(__file__))
+    # FIXED: Get correct deepfashion directory
+    deepfashion_dir = os.path.join(os.path.dirname(__file__), "deepfashion")
+    
+    if not os.path.exists(deepfashion_dir):
+        raise FileNotFoundError(f"DeepFashion directory not found at {deepfashion_dir}")
+    
     data = parse_deepfashion_files(deepfashion_dir)
     
     # Combine categories and attributes
@@ -23,7 +28,7 @@ def generate_labels():
             all_labels.add(f"{attr} {category}")
     
     # Write to file
-    output_path = os.path.join(os.path.dirname(deepfashion_dir), "clip_labels.txt")
+    output_path = os.path.join(os.path.dirname(__file__), "clip_labels.txt")
     with open(output_path, "w") as f:
         f.write("\n".join(sorted(all_labels)))
     
