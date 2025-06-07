@@ -1,21 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import ImageUploadPortal from './pages/ImageUploadPortal';
 
-const Dashboard: React.FC = () => {
-  const { currentUser, logout } = useAuth();
-
-  return (
-    <div>
-      <h2>Dashboard</h2>
-      <p>Welcome, {currentUser?.email}</p>
-      <button onClick={logout}>Log Out</button>
-    </div>
-  );
-};
 
 function App() {
   return (
@@ -24,14 +14,15 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
-          <Route 
+          <Route path="/imageUploadPortal" element={<ImageUploadPortal />} />
+          {/* <Route 
             path="/" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <ImageUploadPortal />
               </ProtectedRoute>
             } 
-          />
+          /> */}
           <Route path="*" element={<SignIn />} />
         </Routes>
       </AuthProvider>
