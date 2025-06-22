@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const uploadRoute = require("./routes/uploadRoute");
-const searchRoute = require("./routes/searchRoute");
-const labelRoute = require("./routes/labelRoute"); // NEW
 const path = require("path");
 require("dotenv").config();
+const uploadRoute = require("./routers/uploadRoute");
+const searchRoute = require("./routers/searchRoute");
+const labelRoute = require("./routers/labelRoute");
 
 const app = express();
 const PORT = process.env.PORT || 5000;

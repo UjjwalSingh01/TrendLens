@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-module.exports = async function scrapeMyntra(url) {
+async function scrapeMyntra(url) {
   try {
     const { data } = await axios.get(url, { 
       headers: { 
@@ -35,3 +35,5 @@ module.exports = async function scrapeMyntra(url) {
     return [];
   }
 };
+
+module.exports = scrapeMyntra;
