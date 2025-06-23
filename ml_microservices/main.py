@@ -1,8 +1,9 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from model.clip_matcher import get_best_clip_label
-from model.blip_caption import generate_caption
-from model.keyword_extractor import extract_keywords
+from models.clip_matcher import get_best_clip_label
+from models.blip_caption import generate_caption
+from models.keyword_extractor import extract_keywords
+from deepfashion.generate_labels import generate_labels
 import logging
 import numpy as np
 from PIL import Image
@@ -48,7 +49,6 @@ async def process_image(file: UploadFile = File(...)):
 @app.get("/generate-labels")
 async def generate_labels_endpoint():
     try:
-        from generate_labels import generate_labels
         generate_labels()
         return {"status": "success", "message": "Labels generated"}
     except Exception as e:
