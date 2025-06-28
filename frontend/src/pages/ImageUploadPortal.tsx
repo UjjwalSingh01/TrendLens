@@ -65,7 +65,7 @@ const ImageUploadPortal: React.FC = () => {
       formData.append('image', file);
 
       const response = await axios.post<UploadResponse>(
-        'http://localhost:5000/api/upload', 
+        'http://localhost:5000/api/upload/image', 
         formData,
         {
           headers: {

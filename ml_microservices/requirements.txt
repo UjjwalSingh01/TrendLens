@@ -1,0 +1,24 @@
+fastapi
+uvicorn
+pillow
+transformers>=4.36.0
+torch>=2.0.0
+timm
+accelerate
+
+# CLIP and image processing
+git+https://github.com/openai/CLIP.git
+
+# KeyBERT and sentence transformer for keyword extraction
+keybert
+sentence-transformers
+
+# CORS for frontend integration
+python-multipart
+fastapi[all]
+
+# Optional but useful for logging and dev
+loguru
+
+requests
+httpx
